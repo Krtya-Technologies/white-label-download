@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Download App</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px 20px;
+            background: #ffffff;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #666;
+        }
+
+        .button {
+            display: block;
+            margin: 20px auto;
+            padding: 15px 20px;
+            max-width: 300px;
+            background: #222;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1 id="title">Download App</h1>
+
+    <p id="message">
+        Redirecting to the app store...
+    </p>
+
+    <div id="buttons"></div>
+
+</div>
+
+<script>
+
+    /*
+     * ============================================
+     * WHITE LABEL APP CONFIGURATION
+     * ============================================
+     *
+     * Add your apps here.
+     *
+     * Example:
+     *
+     * app1
+     * app2
+     * app3
+     *
+     */
+
+    const apps = {
+
+        app1: {
+            name: "Wellness for Women",
+
+            android:
+                "https://play.google.com/store/apps/details?id=com.membroz.wellnessforwomen",
+
+            ios:
+                "https://apps.apple.com/in/app/wellness-for-women-app/id6785786521"
+        },
+
+        app2: {
+            name: "APP 2",
+
+            android:
+                "ANDROID_PLAY_STORE_URL",
+
+            ios:
+                "IOS_APP_STORE_URL"
+        },
+
+        app3: {
+            name: "APP 3",
+
+            android:
+                "ANDROID_PLAY_STORE_URL",
+
+            ios:
+                "IOS_APP_STORE_URL"
+        },
+
+        app4: {
+            name: "APP 4",
+
+            android:
+                "ANDROID_PLAY_STORE_URL",
+
+            ios:
+                "IOS_APP_STORE_URL"
+        },
+
+        app5: {
+            name: "APP 5",
+
+            android:
+                "ANDROID_PLAY_STORE_URL",
+
+            ios:
+                "IOS_APP_STORE_URL"
+        }
+
+    };
+
+
+    /*
+     * ============================================
+     * GET APP ID FROM QR URL
+     * ============================================
+     */
+
+    const params = new URLSearchParams(window.location.search);
+
+    const appId = params.get("app");
+
+
+    /*
+     * ============================================
+     * CHECK APP
+     * ============================================
+     */
+
+    if (!appId || !apps[appId]) {
+
+        document.getElementById("title").innerText =
+            "App Not Found";
+
+        document.getElementById("message").innerText =
+            "Please scan a valid app QR code.";
+
+    } else {
+
+        const app = apps[appId];
+
+        document.getElementById("title").innerText =
+            app.name;
+
+
+        /*
+         * ========================================
+         * DEVICE DETECTION
+         * ========================================
+         */
+
+        const userAgent =
+            navigator.userAgent ||
+            navigator.vendor ||
+            window.opera;
+
+
+        // Android
+
+        if (/android/i.test(userAgent)) {
+
+            window.location.replace(app.android);
+
+        }
+
+
+        // iPhone / iPad / iPod
+
+        else if (
+            /iPad|iPhone|iPod/.test(userAgent) &&
+            !window.MSStream
+        ) {
+
+            window.location.replace(app.ios);
+
+        }
+
+
+        // Desktop / Unknown Device
+
+        else {
+
+            document.getElementById("message").innerText =
+                "Choose your device:";
+
+            document.getElementById("buttons").innerHTML = `
+
+                <a
+                    class="button"
+                    href="${app.android}"
+                >
+                    Download for Android
+                </a>
+
+                <a
+                    class="button"
+                    href="${app.ios}"
+                >
+                    Download for iPhone
+                </a>
+
+            `;
+
+        }
+
+    }
+
+</script>
+
+</body>
+</html>
